@@ -15,7 +15,7 @@ public class LookAtCamera : MonoBehaviour {
         k += 0.02f;
         k *= speed;
         Distance = this.target.transform.position - this.transform.position;
-        if ((this.transform.position.x >= this.target.transform.position.x && Distance.z > 10))
+        if ((this.transform.position.x >= this.target.transform.position.x && Distance.z > 15   ))
         {
             this.transform.Translate(new Vector3(0, -k / 2, k));
             Distance.z -= k;
