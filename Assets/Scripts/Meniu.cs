@@ -4,15 +4,15 @@ using System.Collections;
 public class Meniu : MonoBehaviour
 {
     public PlayerBehaviour player;
-	public CameraMove movingCam; 
+	public CameraMove movingCam;
 	public GameObject audioStart;
 	public GameObject audioGame;
 	private void Start()
 	{
 		movingCam.CamApproach();
 	}
-    public void StartGame()
-    {
+	public void StartGame()
+	{
  		Canvas canva=player.GetComponentInChildren<Canvas>();
 		canva.gameObject.SetActive(false);
 		movingCam.CamGetBack();
