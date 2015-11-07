@@ -3,17 +3,25 @@ using System.Collections;
 
 public class Meniu : MonoBehaviour
 {
-    public Texture2D buttonimg=null;
     public PlayerBehaviour player;
+	public CameraMove movingCam; 
+	public GameObject audioStart;
+	public GameObject audioGame;
+	private void Start()
+	{
+		movingCam.CamApproach();
+	}
     public void StartGame()
     {
-        Debug.Log("Sttarted");
-        player.stopped = false;
-    }
-  /*  {
-        if(GUI.Button(new Rect(Screen.width/2  , Screen.height/2 ,Screen.width/2,Screen.height/2), ""))
-        {
-            player.stopped = false;
-        }
-*/
-    }
+ 		Canvas canva=player.GetComponentInChildren<Canvas>();
+		canva.gameObject.SetActive(false);
+		movingCam.CamGetBack();
+		player.stopped = false;
+		audioStart.SetActive(false);
+		audioGame.SetActive(true);
+	}
+	public void ShowScene(GameObject scene)
+	{
+		movingCam.CamApproach();
+	}
+ }

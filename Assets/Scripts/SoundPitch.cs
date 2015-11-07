@@ -6,17 +6,17 @@ public class SoundPitch : MonoBehaviour
 {
     public int startingPitch = 10;
     public int timeToDecrease = 5;
-    AudioSource audio;
+    AudioSource audioSource;
 
     void Start()
     {
-        audio = GetComponent<AudioSource>();
-        audio.pitch = startingPitch;
+		audioSource = GetComponent<AudioSource>();
+		audioSource.pitch = startingPitch;
     }
 
     void Update()
     {
-        if (audio.pitch > 0)
-            audio.pitch -= Time.deltaTime * startingPitch / timeToDecrease;
+		if (audioSource.pitch > 0)
+			audioSource.pitch -= Time.deltaTime * startingPitch / timeToDecrease;
     }
 }
