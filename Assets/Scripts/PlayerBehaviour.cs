@@ -11,6 +11,8 @@ public class PlayerBehaviour : MonoBehaviour {
 	private float mCachedStartSpeed;
 	private float mCachedStartPitch;
 	private Vector3 cachedPos;
+	public GameObject animationIdle;
+	public GameObject animationWalking;
 	public float moralityMax=20f;
 	public float stressSpeed=10f;
 	public float speedPerSecond=2f;
@@ -29,6 +31,8 @@ public class PlayerBehaviour : MonoBehaviour {
 	{
 		mCachedStartSpeed=speedPerSecond;
 		mCachedStartPitch=audioSource.pitch;
+		mMorality=moralityMax/2;
+		speedPerSecond=speedMax/2;
 	}
 	private void Update () {
 		if(mStopped) {
@@ -45,10 +49,14 @@ public class PlayerBehaviour : MonoBehaviour {
 	public void Stop()
 	{
 		mStopped=true;
+		animationWalking.SetActive(false);
+		animationIdle.SetActive(true);
 	}
 	public void Continue()
 	{
 		mStopped=false;
+		animationWalking.SetActive(true);
+		animationIdle.SetActive(false);
 	}
 	public void SetMorality(float value)
 	{

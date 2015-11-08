@@ -2,5 +2,5 @@
 
 public class SceneData : MonoBehaviour {
 
-	public Texture sceneImage;
+	public Sprite sceneImage;
 }

@@ -6,4 +6,7 @@ public class SceneChoice : MonoBehaviour {
 	public int deltaStress=0;
 	public int deltaMorality=0;
 	public AudioSource sound;
+	public string choiceText;
+	public float choiceTextDelay;
+
 }

@@ -11,8 +11,9 @@ public class SceneUI : MonoBehaviour {
 	private PlayerBehaviour mPlayer=null;
 	private SceneChoice mActiveChoice=null;
 	private CallbackDelegate mCallback=null;
+	private bool mChoiceDone=true;
 	public float minAlpha=0.2f;
-	public float warpTime=1.5f;
+	public float warpTime=3f;
 	public Image imageToSet;
 	public SceneChoice defaultWalkChoice;
 
@@ -27,8 +28,7 @@ public class SceneUI : MonoBehaviour {
 	public void StartScene (string sceneName, CallbackDelegate dele) {
 		mBack.gameObject.SetActive(true);
 		mCachedColor=mBack.color;
-		imageToSet.material.SetTexture("_MainTex", 
-		                               mParentUI.transform.Find(sceneName).gameObject.GetComponent<SceneData>().sceneImage);
+		imageToSet.overrideSprite=mParentUI.transform.Find(sceneName).gameObject.GetComponent<SceneData>().sceneImage;
 		Lerper.RegisterLerper(SetBackAlpha, mStartAlpha, minAlpha, warpTime, StartChoice);
 		mCachedSceneUI=mParentUI.transform.Find (sceneName).gameObject;
 		mCallback=dele;
@@ -42,14 +42,22 @@ public class SceneUI : MonoBehaviour {
 	{
 		imageToSet.gameObject.SetActive(true);
 		mCachedSceneUI.SetActive(true);
-		StartCoroutine(TimerChoice(mPlayer.stressSpeed));
+		StartCoroutine(TimerChoice(mPlayer.stressSpeed, DefaultChoice));
+		mChoiceDone=false;
 	}
-	IEnumerator TimerChoice(float seconds) {
+	IEnumerator TimerChoice(float seconds, CallbackDelegate cb) {
 		yield return new WaitForSeconds(seconds);
-		ChoiceDone(defaultWalkChoice);
+		cb();
+	}
+	public void DefaultChoice()
+	{
+		if(!mChoiceDone) {
+			ChoiceDone(defaultWalkChoice);
+		}
 	}
 	public void ChoiceDone(SceneChoice who)
 	{
+		mChoiceDone=true;
 		if(who==null) {
 			ChoiceDoneEnd();
 			return;
@@ -59,6 +67,10 @@ public class SceneUI : MonoBehaviour {
 			who.sound.gameObject.SetActive(true);
 		}
 		mActiveChoice=who;
+	}
+	public void ChoiceText()
+	{
+
 	}
 	public void ChoiceDoneEnd()
 	{
@@ -72,11 +84,25 @@ public class SceneUI : MonoBehaviour {
 			mPlayer.DeltaStress(mActiveChoice.deltaStress);
 			mPlayer.DeltaHealth(mActiveChoice.deltaHealth);
 			mPlayer.DeltaMorality(mActiveChoice.deltaMorality);
+			if(mActiveChoice.choiceText!="") {
+				StartCoroutine(TimerChoice(mActiveChoice.choiceTextDelay, DefaultChoice));
+			}
 		}
 		mActiveChoice=null;
 		if(null!=mCallback) {
 			mCallback();
 		}
 		mCallback=null;
+	}
+	public void TextOnBlackScreen(string text) {
+		mBack.transform.GetChild(0).gameObject.SetActive(false);
+		mBack.gameObject.SetActive(true);
+		Lerper.RegisterLerper(SetBackAlpha, minAlpha, 1, warpTime, RestartGame);
+
+	}
+	public void RestartGame() {
+		int level=Application.loadedLevel;
+		Application.UnloadLevel(Application.loadedLevel);
+		Application.LoadLevel (level);
 	}
 }
