@@ -3,25 +3,59 @@ using System.Collections;
 
 public class Meniu : MonoBehaviour
 {
-    public PlayerBehaviour player;
+	private const float cLowVolume=0.25f;
+	private const float cNormalVolume=0.85f;
+	private static Meniu mInstance=null;
+	private GameObject mStartedScene=null;
+	public PlayerBehaviour player;
 	public CameraMove movingCam;
-	public GameObject audioStart;
-	public GameObject audioGame;
+	public AudioSource audioStart;
+	public AudioSource audioGame;
+	public SceneUI scenesGUI;
+
+	Meniu()
+	{
+		if(mInstance!=null) {
+			Destroy(this);
+		}
+		mInstance=this;
+	}
 	private void Start()
 	{
+		player.Stop ();
 		movingCam.CamApproach();
+		Screen.autorotateToLandscapeLeft=true;
+	}
+	public static Meniu Singleton()
+	{
+		return mInstance;
 	}
 	public void StartGame()
 	{
  		Canvas canva=player.GetComponentInChildren<Canvas>();
 		canva.gameObject.SetActive(false);
 		movingCam.CamGetBack();
-		player.stopped = false;
-		audioStart.SetActive(false);
-		audioGame.SetActive(true);
+		player.Continue();
+		audioStart.gameObject.SetActive(false);
+		SetVolume(cNormalVolume);
+		audioGame.gameObject.SetActive(true);
 	}
-	public void ShowScene(GameObject scene)
+	public void StartScene(GameObject scene) {
+		player.Stop();
+		mStartedScene=scene;
+		movingCam.CamApproach(StartChoice);
+		Lerper.RegisterLerper(SetVolume, cNormalVolume, cLowVolume, movingCam.approachTime);
+	}
+	public void StartChoice() {
+		SetVolume(cLowVolume);
+		scenesGUI.StartScene(mStartedScene.name, ChoiceTaken);
+	}
+	public void ChoiceTaken() {
+		Lerper.RegisterLerper(SetVolume, cLowVolume, cNormalVolume, movingCam.approachTime);
+		movingCam.CamGetBack(player.Continue);
+	}
+	public void SetVolume(float volume)
 	{
-		movingCam.CamApproach();
+		audioGame.volume=volume;
 	}
  }

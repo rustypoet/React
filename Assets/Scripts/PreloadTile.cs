@@ -13,7 +13,7 @@ public class PreloadTile : MonoBehaviour {
 
 	private void Start () {
 		int i=1;
-		mTileLength=(float)tileTextures[0].width/10f;
+		mTileLength=(float)tileTextures[0].width/10f-1f;
 		GameObject tileTemplate=transform.GetChild(0).gameObject;
 		SetTileTexture (tileTemplate, tileTextures[0]);
 		tiles.Add (tileTemplate);
