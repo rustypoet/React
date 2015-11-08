@@ -63,14 +63,16 @@ public class SceneUI : MonoBehaviour {
 	public void ChoiceDoneEnd()
 	{
 		mBack.gameObject.SetActive(false);
-		mCachedSceneUI.SetActive(false);
-		mCachedSceneUI=null;
-		if(mActiveChoice.sound!=null) {
-			mActiveChoice.sound.gameObject.SetActive(false);
+		if(mCachedSceneUI!=null) {
+			mCachedSceneUI.SetActive(false);
 		}
-		mPlayer.IncreaseStress(mActiveChoice.deltaStress);
-		mPlayer.IncreaseHealth(mActiveChoice.deltaHealth);
-		mPlayer.IncreaseMorality(mActiveChoice.deltaMorality);
+		mCachedSceneUI=null;
+		if(mActiveChoice!=null) {
+			mActiveChoice.sound.gameObject.SetActive(false);
+			mPlayer.DeltaStress(mActiveChoice.deltaStress);
+			mPlayer.DeltaHealth(mActiveChoice.deltaHealth);
+			mPlayer.DeltaMorality(mActiveChoice.deltaMorality);
+		}
 		mActiveChoice=null;
 		if(null!=mCallback) {
 			mCallback();

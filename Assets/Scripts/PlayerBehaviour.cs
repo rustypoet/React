@@ -61,23 +61,15 @@ public class PlayerBehaviour : MonoBehaviour {
 		speedPerSecond=Mathf.Clamp(value, 0f, speedMax);
 		audioSource.pitch=Mathf.Clamp(mCachedStartPitch*speedPerSecond/mCachedStartSpeed, 0f, mCachedStartPitch);
 	}
-	public void IncreaseMorality(float value=1f)
+	public void DeltaMorality(float value=1f)
 	{
 		SetMorality(mMorality+value);
 	}
-	public void DecreaseMorality(float value=1f)
-	{
-		SetMorality (mMorality-value);
-	}
-	public void DecreaseHealth(float value=1f)
-	{
-		SetSpeed (speedPerSecond-value);
-	}
-	public void IncreaseHealth(float value=1f)
+	public void DeltaHealth(float value=1f)
 	{
 		SetSpeed (speedPerSecond+value);
 	}
-	public void IncreaseStress(float value=1f)
+	public void DeltaStress(float value=1f)
 	{
 		stressSpeed-=value;
 	}
