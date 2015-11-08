@@ -46,9 +46,7 @@ public class SceneUI : MonoBehaviour {
 	}
 	IEnumerator TimerChoice(float seconds) {
 		yield return new WaitForSeconds(seconds);
-		if(defaultWalkChoice) {
-			ChoiceDone(defaultWalkChoice);
-		}
+		ChoiceDone(defaultWalkChoice);
 	}
 	public void ChoiceDone(SceneChoice who)
 	{
